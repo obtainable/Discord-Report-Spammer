@@ -23,12 +23,7 @@ class Reporter:
             "Content-Type": "application/json",
             "Authorization": self.token
         }
-        json = {
-            "channel_id": self.channel_id, 
-            "message_id": self.message_id, 
-            "guild_id": self.guild_id, 
-            "reason": self.reason
-        }
+        json = {"channel_id": self.channel_id, "message_id": self.message_id, "guild_id": self.guild_id, "reason": self.reason}
         Report = self.session().post("https://discordapp.com/api/v8/report", json = json, headers = headers)
         if Report.status_code == 201:
             self.reported += 1
