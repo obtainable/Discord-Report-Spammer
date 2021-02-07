@@ -3,10 +3,13 @@ import threading, requests, ctypes, os
 
 class Reporter:
     def __init__(self):
-        self.session = requests.Session()
-        self.session.trust_env = False
         self.reported = 0
         self.errors = 0
+        
+    def session(self):
+        session = requests.Session()
+        session.trust_env = False
+        return session
 
     def update_title(self):
         ctypes.windll.kernel32.SetConsoleTitleW("Discord Report Spammer | Sent: {0} | Errors: {1}".format(self.reported, self.errors))
@@ -26,7 +29,7 @@ class Reporter:
             "guild_id": self.guild_id, 
             "reason": self.reason
         }
-        Report = self.session.post("https://discordapp.com/api/v8/report", json = json, headers = headers)
+        Report = self.session().post("https://discordapp.com/api/v8/report", json = json, headers = headers)
         if Report.status_code == 201:
             self.reported += 1
             self.update_title()
